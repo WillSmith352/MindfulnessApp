@@ -1,0 +1,37 @@
+{
+  "ProjectName": "Daily Mindfulness App",
+  "ProjectGuid": "b2bac5d0-8ee6-4b38-a211-ee7debe6f6d5",
+  "projectVersion": 1,
+  "AppIdentifier": "com.telerik.DailyMindfulnessApp",
+  "DisplayName": "Daily Mindfulness App",
+  "Author": "",
+  "Description": "",
+  "BundleVersion": "1.0",
+  "AndroidVersionCode": "1",
+  "iOSDeviceFamily": [
+    "1",
+    "2"
+  ],
+  "iOSBackgroundMode": [],
+  "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
+  "FrameworkVersion": "3.5.0",
+  "AndroidPermissions": [],
+  "DeviceOrientations": [
+    "Portrait",
+    "Landscape"
+  ],
+  "AndroidHardwareAcceleration": "false",
+  "iOSStatusBarStyle": "Default",
+  "Framework": "Cordova",
+  "WP8TileTitle": "",
+  "WP8Publisher": "",
+  "WP8Capabilities": [],
+  "WP8Requirements": [],
+  "WP8PublisherID": "{fb69395b-a5c9-4ff8-97cb-21e5377e84da}",
+  "WP8ProductID": "{aee25d44-a997-4b42-80c8-ef0b974873e1}",
+  "WP8SupportedResolutions": [
+    "ID_RESOLUTION_WVGA",
+    "ID_RESOLUTION_WXGA",
+    "ID_RESOLUTION_HD720P"
+  ]
+}
