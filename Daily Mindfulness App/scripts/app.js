@@ -1,52 +1,192 @@
-
-(function () {
-
-    // store a reference to the application object that will be created
-    // later on so that we can use it if need be
-    var app;
-
-    // create an object to store the models for each view
-    window.APP = {
-      models: {
-        home: {
-          title: 'Home'
-        },
-        settings: {
-          title: 'Settings'
-        },
-        contacts: {
-          title: 'Contacts',
-          ds: new kendo.data.DataSource({
-            data: [{ id: 1, name: 'Bob' }, { id: 2, name: 'Mary' }, { id: 3, name: 'John' }]
-          }),
-          alert: function(e) {
-            alert(e.data.name);
-          }
-        }
-      }
-    };
-
-    // this function is called by Cordova when the application is loaded by the device
-    document.addEventListener('deviceready', function () {  
-      
-      // hide the splash screen as soon as the app is ready. otherwise
-      // Cordova will wait 5 very long seconds to do it for you.
-      navigator.splashscreen.hide();
-
-      app = new kendo.mobile.Application(document.body, {
+angular.module('mindfulMobileApp', [ 'kendo.directives', 'ngSanitize' ])
+    .run(['worksheetService', function(worksheetService){
+        worksheetService.init();
+        worksheetService.setCurrentStep(1);
+        worksheetService.loadData();
+    }])
+    .service('worksheetService', function() {
+        this.init = function() {
+            //the application DataSources
+            this.worksheetData = new kendo.data.DataSource({
+                data: [{
+                    id: 1,
+                    title: "Activating Event",
+                    letter: "A",
+                    description: "What happened to trigger this emotional response?",
+                    hint: "",
+                    textbox: false,
+                    textarea: true,
+                    emotional: false,
+                    behavioral: false,
+                    dispute: false,
+                    disputeb: false
+                },
+                {
+                    id: 2,
+                    title: "Belief System",
+                    letter: "B",
+                    description: "What is your belief that leads you to the Response (C) listed in the next step?",
+                    hint: "",
+                    textbox: true,
+                    textarea: false,
+                    emotional: false,
+                    behavioral: false,
+                    dispute: false,
+                    disputeb: false
+                },
+                {
+                    id: 3,
+                    title: "C1",
+                    letter: "Consequence - Emotional",
+                    description: "",
+                    hint: "",
+                    textbox: false,
+                    textarea: false,
+                    emotional: true,
+                    behavioral: false,
+                    dispute: false,
+                    disputeb: false
+                },
+                {
+                    id: 4,
+                    title: "Consequence - Behavioral",
+                    letter: "C2",
+                    description: "",
+                    hint: "",
+                    textbox: false,
+                    textarea: false,
+                    emotional: false,
+                    behavioral: true,
+                    dispute: false,
+                    disputeb: false
+                },
+                {
+                    id: 5,
+                    title: "Dispute the Belief System",
+                    letter: "D1",
+                    description: "Dispute the Belief by asking a question of the <b>Belief System</b> that led to the emotional consequence.",
+                    hint: "",
+                    textbox: false,
+                    textarea: false,
+                    emotional: false,
+                    behavioral: false,
+                    dispute: true
+                },
+                {
+                    id: 6,
+                    title: "Dispute the Belief System",
+                    letter: "D2",
+                    description: "Dispute the belief system by asking: How much do I believe in this Belief from 0 to 100%?",
+                    hint: "",
+                    textbox: false,
+                    textarea: false,
+                    emotional: false,
+                    behavioral: false,
+                    dispute: false,
+                    disputeb: true
+                },
+                {
+                    id: 7,
+                    title: "Dispute the Belief System",
+                    letter: "D3",
+                    description: "Dispute the belief system by asking: What if my Belief was 100% factual up until this moment? What would the emotional consequences have been?",
+                    hint: "",
+                    textbox: false,
+                    textarea: true,
+                    emotional: false,
+                    behavioral: false,
+                    dispute: false,
+                    disputeb: false
+                },
+                {
+                    id: 8,
+                    title: "D3",
+                    letter: "",
+                    description: "",
+                    hint: "",
+                    textbox: false,
+                    textarea: true,
+                    emotional: false,
+                    behavioral: false,
+                    dispute: false,
+                    disputeb: false
+                }],
+                schema: {
+                    model: { id: "id" }
+                }
+            });
+            this.worksheetData.read();
+            this.emotionsData = [
+                {
+                    "name": "Anger / Irritability",
+                    "d1": "Why shouldn't...this way?"
+                },
+                {
+                    "name": "Depression / Sadness",
+                    "d1": "Are my needs really not being met?"
+                },
+                            {
+                    "name": "Anxiety",
+                    "d1": "Is it really that bad?"
+                },
+                {
+                    "name": "Guilt",
+                    "d1": "Did I really do something wrong and am I worthless?"
+                }
+            ];
+            //observable array that will be used to store products that user has selected
+            //this.added = new kendo.data.ObservableArray([]);
+            this.currentStep = null;
+            this.stepData = [];
+        };
         
-        // you can change the default transition (slide, zoom or fade)
-        transition: 'slide',
+        this.saveStep = function(pageModel) {
+            this.stepData[this.currentStep.id - 1] = pageModel;
+        };
         
-        // comment out the following line to get a UI which matches the look
-        // and feel of the operating system
-        skin: 'flat',
-
-        // the application needs to know which view to load first
-        initial: 'views/home.html'
-      });
-
-    }, false);
-
-
-}());
+        this.loadData = function() {
+            //take what we have saved and push it into stepData
+            this.stepData = [];
+            this.stepData.push({ textarea: "", textbox: "", emotion: "", physical: "", dispute: "" });
+            this.stepData.push({ textarea: "", textbox: "", emotion: "", physical: "", dispute: "" });
+            this.stepData.push({ textarea: "", textbox: "", emotion: "", physical: "", dispute: "" });
+            this.stepData.push({ textarea: "", textbox: "", emotion: "", physical: "", dispute: "" });
+            this.stepData.push({ textarea: "", textbox: "", emotion: "", physical: "", dispute: "" });
+            this.stepData.push({ textarea: "", textbox: "", emotion: "", physical: "", dispute: "" });
+            this.stepData.push({ textarea: "", textbox: "", emotion: "", physical: "", dispute: "" });
+        };
+        
+        this.getStepData = function(idx) {
+            return this.stepData[idx];
+        };
+        
+        this.setCurrentStep = function(id) {
+            this.currentStep = this.worksheetData.get(id);
+        };
+        
+    })
+    .controller('homeController', ['$scope', 'worksheetService', function($scope, worksheetService) {
+        $scope.worksheetService = worksheetService;
+        
+        $scope.loadStep = function() {
+            $scope.pageModel = worksheetService.getStepData(worksheetService.currentStep.id - 1);
+        };
+        
+        $scope.loadStep();
+        
+        $scope.showNext = function() { return worksheetService.currentStep.id < 7; };
+        $scope.showPrev = function() { return worksheetService.currentStep.id > 1; };
+        
+        $scope.goPrevStep = function() {
+            worksheetService.saveStep($scope.pageModel);
+            worksheetService.setCurrentStep(worksheetService.currentStep.id - 1);
+            $scope.loadStep();
+        };
+        
+        $scope.goNextStep = function() {
+            worksheetService.saveStep($scope.pageModel);
+            worksheetService.setCurrentStep(worksheetService.currentStep.id + 1);
+            $scope.loadStep();
+        };
+        
+    }]);

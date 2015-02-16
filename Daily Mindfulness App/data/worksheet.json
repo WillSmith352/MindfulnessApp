@@ -1,0 +1,75 @@
+[{
+        "id": 1,
+        "title": "Activating Event",
+        "letter": "A",
+        "description": "What happened to trigger this emiotional response?",
+        "hint": "",
+        "textbox": true,
+        "textarea": false
+    },
+    {
+        "id": 2,
+        "title": "Belief System",
+        "letter": "B",
+        "description": "What is your belief that leads you to the Response (C) listed in the next step?",
+        "hint": "",
+        "textbox": true,
+        "textarea": false
+    },
+    {
+        "id": 3,
+        "title": "C1",
+        "letter": "Consequence - Emotional",
+        "description": "",
+        "hint": "",
+        "textbox": false,
+        "textarea": false,
+        "emotional": true
+    },
+    {
+        "id": 4,
+        "title": "Consequence - Behavioral",
+        "letter": "C2",
+        "description": "",
+        "hint": "",
+        "textbox": false,
+        "textarea": false,
+        "behavioral": true
+    },
+    {
+        "id": 5,
+        "title": "Dispute the Belief",
+        "letter": "D1",
+        "description": "Dispute the Belief by asking a question of the <b>Belief System</b> that led to the emotional consequence.",
+        "hint": "",
+        "textbox": false,
+        "textarea": true,
+        "dispute": true
+    },
+    {
+        "id": 6,
+        "title": "",
+        "letter": "",
+        "description": "",
+        "hint": "",
+        "textbox": false,
+        "textarea": true
+    },
+    {
+        "id": 1,
+        "title": "",
+        "letter": "",
+        "description": "",
+        "hint": "",
+        "textbox": false,
+        "textarea": true
+    },
+    {
+        "id": 6,
+        "title": "",
+        "letter": "",
+        "description": "",
+        "hint": "",
+        "textbox": false,
+        "textarea": true
+    }]
