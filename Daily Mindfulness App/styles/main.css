@@ -11,6 +11,28 @@ body, html {
     padding-bottom: 5px;
 }
 
+.checkboxlist {
+    margin: 0;
+}
+
+.checkboxlist li {
+    margin-left: -44px;
+    padding: 0;
+}
+
+.error {
+    color: red;
+    font-size: 0.9em;
+    padding-left: 0px;
+    padding-top: 10px;
+    padding-right: 5px;
+    padding-bottom: 0px;
+}
+
+.required {
+    
+}
+
 textarea {
     width: 90%;
 }
@@ -18,4 +40,33 @@ textarea {
 .navigation {
     padding-top: 20px;
     padding-bottom: 10px;
+}
+
+.steps {
+    margin-right: 10px;
+    margin-top: 20px;
+}
+
+.text {
+    margin-top: 8px;
+    margin-bottom: 16px;
+}
+
+.hint {
+    opacity: 0.75;
+    font-size: 0.9em;
+}
+
+.position-left {
+    float: left;
+}
+
+.position-right {
+    float: right;
+}
+
+.position.center {
+    position: absolute;
+    margin: 0 auto;
+    width: 100%;
 }

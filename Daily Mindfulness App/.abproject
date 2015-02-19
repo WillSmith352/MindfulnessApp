@@ -5,7 +5,7 @@
   "AppIdentifier": "com.telerik.DailyMindfulnessApp",
   "DisplayName": "Daily Mindfulness App",
   "Author": "",
-  "Description": "",
+  "Description": "Daily Mindfulness App",
   "BundleVersion": "1.0",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
