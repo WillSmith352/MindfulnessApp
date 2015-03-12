@@ -5,6 +5,7 @@ angular.module('mindfulMobileApp', [ 'kendo.directives', 'ngSanitize' ])
     .service('worksheetService', function() {
         this.init = function() {
             //the application DataSources
+            //this.worksheetEntryData = new kendo.data.DataSource();
             this.worksheetData = new kendo.data.DataSource({
                 data: [{
                     id: 1,
@@ -239,12 +240,32 @@ angular.module('mindfulMobileApp', [ 'kendo.directives', 'ngSanitize' ])
               apiKey: this.apiKey
             });
             
+            //I have no idea if I need to do this or not
+            var token = this.getAccessToken();
+            if (token && token.length > 0) {
+                this.el.accessToken = token;
+            }
+            
             //Data is now available
             this.loadData();
         };
-        
-        this.saveStep = function(pageModel) {
+    
+        this.saveResponse = function(pageModel) {
+            //console.log();
             this.stepData[this.currentStep.id - 1] = pageModel;
+        };
+    
+        this.createWorksheetEntry = function(data) {
+            this.el.data('WorksheetEntry').create(data, function(data) {
+                console.log(JSON.stringify(data));
+            },
+            function(data) {
+                console.log(JSON.stringify(data));
+            }
+        )};
+    
+        this.updateWorksheetEntry = function(data) {
+            this.el.data('WorksheetEntry').updateSingle(data);
         };
         
         this.apiKey = "";
@@ -282,22 +303,43 @@ angular.module('mindfulMobileApp', [ 'kendo.directives', 'ngSanitize' ])
             
         };
         
+        this.getAccessToken = function() {
+            return window.localStorage.getItem("access_token");
+        };
+    
+        this.setAccessToken = function(value) {
+            window.localStorage.setItem("access_token", value);
+        };
+    
+        this.signOut = function() {
+            this.el.Users.logout(function (data) {
+                this.currentUser = null;
+                this.setAccessToken("");
+            },
+            function(error){
+                //throw error?
+                console.log(error);
+                return null;
+            });
+        };
+    
         this.currentUser = null;
-        this.getCurrentUser = function() {
-            
-            if (this.currentUser != null) {
-                return this.currentUser;
+        this.getCurrentUser = function(success, failure) {
+            if (this.currentUser) {
+                success(this.currentUser);
             }
             
-            var el = new Everlive(this.apiKey);
-            el.Users.currentUser()
-                .then(function (data) {
-                    return data;
+            this.el.Users.currentUser(function (data) {
+                    console.log("getCurrentUser: " + JSON.stringify(data.result));
+                    this.currentUser = data.result;
+                    success(data.result);
+                    //return data.result;
                 },
                 function(error){
                     //throw error?
-                    console.log(error);
-                    return null;
+                    //console.log(error);
+                    //return null;
+                    failure(error);
                 });
         };
         
@@ -311,9 +353,11 @@ angular.module('mindfulMobileApp', [ 'kendo.directives', 'ngSanitize' ])
         
         this.getEmotion = function(emotion) {
             var stepNumber = 3;
-            var emotionStepData = this.stepData[stepNumber - 1];
-            var emotion = emotionStepData.response;
-            return emotion ? emotion : "";
+            //var emotionStepData = this.stepData[stepNumber - 1];
+            //var emotion = emotionStepData.response;
+            //return emotion ? emotion : "";
+            
+            return "None";
         };
         
         this.getDisputeFromEmotion = function() {
@@ -328,73 +372,221 @@ angular.module('mindfulMobileApp', [ 'kendo.directives', 'ngSanitize' ])
             }
             return d;
         };
-            
     })
     .controller('aboutController', ['$scope', 'worksheetService', function($scope, worksheetService) {
         //nothing
+    }])
+    .controller('registerController', ['$scope', 'worksheetService', function($scope, worksheetService) {
+        $scope.pageModel = {
+            email: "",
+            password: "",
+            password2: "",
+            showValidationMsg: false,
+            showPasswordMsg: false
+        }
+        
+        $scope.handleError = function(data) {
+            //console.log("Error: " + JSON.stringify(data));
+            var msg = "An unknown error has occurred. Please try again.";
+            
+            if (data && data.message) {
+                $scope.pageModel.errorMessage = data.message;
+            }
+        };
+        
+        $scope.register = function() {
+            
+            //console.log("here with email: " + $scope.pageModel.email);
+            
+            worksheetService.signOut();
+            
+            if ($scope.pageModel.email.length === 0 ||
+               $scope.pageModel.password.length === 0 ||
+               $scope.pageModel.password2.length === 0)
+            {
+                $scope.pageModel.showValidationMsg = true;
+                return;
+            }
+            
+            //check password
+            if ($scope.pageModel.password.length < 8) {
+                $scope.pageModel.showPasswordMsg2 = true;
+                return;
+            }
+            
+            if ($scope.pageModel.password !== $scope.pageModel.password2) {
+                $scope.pageModel.showPasswordMsg = true;
+                return;
+            }
+            
+            var username = $scope.pageModel.email;
+            var password = $scope.pageModel.password;
+            var user = {
+                "DisplayName": $scope.pageModel.email,
+                "Email": $scope.pageModel.email
+            }
+            
+            //disable button?
+            
+            worksheetService.el.Users.register(username,
+                password,
+                user,
+                function (data) {
+                    if (data && data.result) {
+                        //var accountId = data.result.Id;
+                        worksheetService.setAccessToken(data.result.access_token);
+                        console.log("registered!");
+                        console.log(JSON.stringify(data));
+                        window.location.href="#home";
+                        return;
+                    }
+                    $scope.handleError({message: "Received an invalid response from the server during register process."});
+                },
+                function(error){
+                    //console.log(JSON.stringify(error));
+                    $scope.handleError(error);
+                });
+            
+            //enable button
+            
+        };
+           
+    }])
+    .controller('signinController', ['$scope', 'worksheetService', function($scope, worksheetService) {
+       $scope.pageModel = {
+            username: "",
+            password: ""
+        }
+        
+        $scope.signin = function() {
+            if ($scope.pageModel.username.length === 0 ||
+               $scope.pageModel.password.length === 0)
+            {
+                $scope.pageModel.showValidationMsg = true;
+                return;
+            }
+            
+            worksheetService.el.Users.login($scope.pageModel.username,
+                $scope.pageModel.password,
+                function (data) {
+                    //console.log(JSON.stringify(data));
+                    if (data && data.result) {
+                        worksheetService.setAccessToken(data.result.access_token);
+                        console.log("Fresh token: " + worksheetService.getAccessToken());
+                    };
+                    //console.log("logged in!");
+                    window.location.href="#home";
+                },
+                function(error){
+                    console.log(JSON.stringify(error));
+            });
+        };
+        
     }])
     .controller('homeController', ['$scope', 'worksheetService', function($scope, worksheetService) {
         $scope.worksheetService = worksheetService;
         
         $scope.loadStep = function() {
-            $scope.pageModel = worksheetService.getStepData(worksheetService.currentStep.id - 1);
-            $scope.isSubmitted = false;
+            console.log("Current step: " + worksheetService.currentStep.id);
+            //$scope.stepModel = worksheetService.getStepData(worksheetService.currentStep.id - 1);
+            $scope.pageModel.isSubmitted = false;
         };
         
         $scope.mode = "home";
-        //$scope.emotion = "";
-        $scope.isSubmitted = false;
+        $scope.pageModel = {};
+        $scope.pageModel.isSubmitted = false;
+        $scope.pageModel.user = {};
+        $scope.pageModel.user.displayName = "None";
+        
+        $scope.worksheetEntry = {
+          activatingEvent: '',
+          beliefSystem: '',
+          emotionalConsequence: '',
+          behavioralConsequence: '',
+          dispute1: '',
+          dispute2: '',
+          dispute3: '',
+          dispute4a: '',
+          dispute4b: '',
+          dispute4c: ''
+        }
+        
+        worksheetService.getCurrentUser(function(data) {
+                //console.log("User from svc: " + JSON.stringify(data));
+                if (data) {
+                    console.log("Have a user: " + data.DisplayName);
+                    $scope.pageModel.user.displayName = data.DisplayName;
+                    $scope.digest();
+                }
+                else {
+                    console.log("No user");
+                }
+            }, function(error) {
+                console.log("Error: " + error);
+        });
         
         //service?
+        /*
         $scope.getStatusLink = function() {
-            var user = worksheetService.getCurrentUser();
-            if (user && user.DisplayName.length > 0) {
+            //var user = worksheetService.getCurrentUser();
+            if (user && user.displayName.length > 0) {
                 //User is signed in
                 return "Account";
             }
             return "Sign In";
         };
-        $scope.statusLink = $scope.getStatusLink();
+        $scope.pageModel.statusLink = $scope.getStatusLink();
+        */
         
         $scope.loadStep();
+        
+        //load user response data
+        
         
         //Now stuff is loaded for the current step
         
         $scope.showNext = function() { return worksheetService.currentStep.id < worksheetService.worksheetData.data().length; };
         $scope.showPrev = function() { return worksheetService.currentStep.id > 1 && worksheetService.currentStep.id < worksheetService.worksheetData.data().length; };
+        $scope.showFinish = function() { return worksheetService.currentStep.id == worksheetService.worksheetData.data().length; };
         
         $scope.goPrevStep = function() {
-            worksheetService.saveStep($scope.pageModel);
+            worksheetService.saveResponse($scope.pageModel);
             worksheetService.setCurrentStep(worksheetService.currentStep.id - 1);
             $scope.loadStep();
         };
         
         $scope.isValid = function() {
             if (worksheetService.currentStep.id == 4) {
-                if ((!$scope.pageModel.body || $scope.pageModel.body.length == 0) &&
-                   (!$scope.pageModel.breath || $scope.pageModel.breath.length == 0) &&
-                   (!$scope.pageModel.cranium || $scope.pageModel.cranium.length == 0)) {
+                if ((!$scope.stepModel.body || $scope.stepModel.body.length == 0) &&
+                   (!$scope.stepModel.breath || $scope.stepModel.breath.length == 0) &&
+                   (!$scope.stepModel.cranium || $scope.stepModel.cranium.length == 0)) {
                     return false;
                 }
             }
             else {
-                if (!$scope.pageModel.response || $scope.pageModel.response.length < 1) {
-                    return false;
-                }
+                //if (!$scope.stepModel.response || $scope.stepModel.response.length < 1) {
+                //    return false;
+                //}
             }
             return true;
         }
         
         $scope.goNextStep = function() {
-            $scope.isSubmitted = true;
+            $scope.pageModel.isSubmitted = true;
             
             //validate
             if (!$scope.isValid()) {
                 return;
             }
-            worksheetService.saveStep($scope.pageModel);
+            //worksheetService.saveResponse($scope.pageModel);
             worksheetService.setCurrentStep(worksheetService.currentStep.id + 1);
             $scope.loadStep();
+        };
+        
+        $scope.saveWorksheet = function() {
+          //asdf  
+          console.log($scope.stepModel);
+          worksheetService.saveWorksheetEntry($scope.stepModel);
         };
         
         $scope.startOver = function() {

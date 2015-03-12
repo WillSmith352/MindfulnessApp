@@ -37,6 +37,17 @@ textarea {
     width: 90%;
 }
 
+input[type="textbox"], input[type="password"], input[type="email"] {
+    padding: 5px 5px 5px 5px;
+}
+
+.button {
+    padding-top: 25px;
+    padding-bottom: 25px;
+    text-align: center;
+    width: 100%;
+}
+
 .navigation {
     padding-top: 20px;
     padding-bottom: 10px;

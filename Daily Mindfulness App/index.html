@@ -19,7 +19,8 @@
     <kendo-mobile-header>
         <kendo-mobile-nav-bar>
             <kendo-view-title></kendo-view-title>
-            <kendo-mobile-button class="about-button" k-align="'right'" data-rel="popover" href="#aboutPop">Account</kendo-mobile-button>
+            <!--<kendo-mobile-button class="about-button" k-align="'right'" data-rel="popover" href="#aboutPop">Account</kendo-mobile-button>-->
+            <kendo-mobile-button class="about-button" k-align="'right'" href="#signin">Account</kendo-mobile-button>
         </kendo-mobile-nav-bar>
     </kendo-mobile-header>
 
@@ -66,52 +67,73 @@
         {{worksheetService.currentStep.title}}
     </h4>
     
+    <form name="form1">
+    
     <div class="box">
     
         <div class="text" ng-bind-html="worksheetService.currentStep.description"></div>
         
-        <div ng-show="worksheetService.currentStep.behavioral">
+        <div ng-show="worksheetService.currentStep.id == 1">
+            <div>
+                <textarea ng-model="stepModel.activatingEvent" rows="8"></textarea>
+                <div class="hint">
+                    {{worksheetService.currentStep.hint}}
+                </div>
+            </div>
+        </div>
+        
+        <div ng-show="worksheetService.currentStep.id == 2">
+            <div>
+                <textarea ng-model="stepModel.beliefSystem" rows="8"></textarea>
+                <div class="hint">
+                    {{worksheetService.currentStep.hint}}
+                </div>
+            </div>
+        </div>
+
+        <div ng-show="worksheetService.currentStep.id == 3">
+            <ul class="checkboxlist">
+                <li><label><input type="radio" name="emotion" ng-model="stepModel.response" value="Anger"> Anger / Irritability</label></li>
+                <li><label><input type="radio" name="emotion" ng-model="stepModel.response" value="Depression"> Depression / Sadness</label></li>
+                <li><label><input type="radio" name="emotion" ng-model="stepModel.response" value="Anxiety"> Anxiety</label></li>
+                <li><label><input type="radio" name="emotion" ng-model="stepModel.response" value="Guilt"> Guilt</label></li>
+            </ul>
+            
+        </div>
+        
+        <div ng-show="worksheetService.currentStep.id == 4">
             <div class="box">
                 <div>
                     <strong>Breath</strong>
                 </div>
-                <input type="text" ng-model="pageModel.breath">
+                <input type="text" ng-model="stepModel.breath">
                 <div class="hint">e.g. Short, harsh, rapid</div>
             </div>
             <div class="box">
                 <div>
                     <strong>Body</strong>
                 </div>
-                <input type="text" ng-model="pageModel.body">
+                <input type="text" ng-model="stepModel.body">
                 <div class="hint">e.g. rapid heartbeat, tension in chest</div>
             </div>
             <div class="box">
                 <div>
                     <strong>Cranium</strong>
                 </div>
-                <input type="text" ng-model="pageModel.cranium">
+                <input type="text" ng-model="stepModel.cranium" ng-required="true">
                 <div class="hint">e.g. tension in jaw, narrowed thinking</div>
             </div>
         </div>
         
-        <div ng-show="worksheetService.currentStep.emotional">
-            <ul class="checkboxlist">
-                <li><label><input type="radio" name="emotion" ng-model="pageModel.response" value="Anger"> Anger / Irritability</label></li>
-                <li><label><input type="radio" name="emotion" ng-model="pageModel.response" value="Depression"> Depression / Sadness</label></li>
-                <li><label><input type="radio" name="emotion" ng-model="pageModel.response" value="Anxiety"> Anxiety</label></li>
-                <li><label><input type="radio" name="emotion" ng-model="pageModel.response" value="Guilt"> Guilt</label></li>
-            </ul>
-        </div>
-        
-        <div ng-show="worksheetService.currentStep.dispute">
+        <div ng-show="worksheetService.currentStep.id == 5">
             <div>
                 <div>{{worksheetService.getDisputeFromEmotion()}}</div>
-                <textarea ng-model="pageModel.response" rows="8"></textarea>
+                <textarea ng-model="stepModel.dispute1" rows="8"></textarea>
             </div>
         </div>
         
-        <div ng-show="worksheetService.currentStep.dispute2">
-            <select ng-model="pageModel.response" ng-required="true">
+        <div ng-show="worksheetService.currentStep.id == 6">
+            <select ng-model="stepModel.dispute2" ng-required="true">
                 <option value="">(Select one)</option>
                 <option>0%</option>
                 <option>10%</option>
@@ -127,52 +149,67 @@
             </select>
         </div>
         
-        <div ng-show="worksheetService.currentStep.dispute4a">
+        <div ng-show="worksheetService.currentStep.id == 8">
             <div>
                 <p>
                     Would you want to maintain the original belief with it's known Emotional and physiological consequences?
                 </p>
                 
                 <p>
-                    <label><input type="radio" name="maintain" ng-model="pageModel.response" value="1"> Yes</label><br>
-                    <label><input type="radio" name="maintain" ng-model="pageModel.response" value="0"> No</label>
+                    <label><input type="radio" name="maintain" ng-model="stepModel.dispute3" value="1"> Yes</label><br>
+                    <label><input type="radio" name="maintain" ng-model="stepModel.dispute3" value="0"> No</label>
                 </p>
             </div>
         </div>
         
-        <div ng-show="worksheetService.currentStep.dispute4b">
+        
+        <div ng-show="worksheetService.currentStep.id == 9">
             <p>
                 How could you make the Belief even worse?
             </p>
+            
+            <div>
+                <textarea ng-model="stepModel.dispute4b" rows="8"></textarea>
+                <div class="hint">
+                    {{worksheetService.currentStep.hint}}
+                </div>
+            </div>
+            
         </div>
         
-        <div ng-show="worksheetService.currentStep.dispute4c">
+        <div ng-show="worksheetService.currentStep.id == 10">
             <p>
                 What new Belief and Behavior could bring about a positive emotional consequence?
             </p>
+            
+            <div>
+                <textarea ng-model="stepModel.activatingEvent" rows="8"></textarea>
+                <div class="hint">
+                    {{worksheetService.currentStep.hint}}
+                </div>
+            </div>
+            
         </div>
         
-        <div ng-show="worksheetService.currentStep.complete">
+        <div ng-show="worksheetService.currentStep.id == 11">
+            <p>
+                Que?
+            </p>
+        </div>
+        
+        <div ng-show="worksheetService.currentStep.id == 12">
             <p>
                 <button id="restart" ng-click="startOver()">
                     Start Over
                 </button>
             </p>
-            
         </div>
 
-        <div ng-show="worksheetService.currentStep.textarea">
-            <textarea ng-model="pageModel.response" rows="8"></textarea>
-            <div class="hint">
-                {{worksheetService.currentStep.hint}}
-            </div>
-        </div>
-        
         <div ng-show="worksheetService.currentStep.textbox">
-            <input type="text" style="width: 100%" ng-model="pageModel.response">
+            <input type="text" style="width: 100%" ng-model="stepModel.response">
         </div>
         
-        <div ng-show="!isValid() && isSubmitted" class="error required">
+        <div ng-show="!isValid() && pageModel.isSubmitted" class="error required">
             Please enter or select a response before continuing.
         </div>
         
@@ -182,15 +219,24 @@
                 |
             </span>
             
+            <span ng-show="showFinish()">
+                <button id="finish" ng-click="saveWorksheet()">Save Form</button>
+            </span>
+            
             <span ng-show="showNext()">
                 <button id="next" ng-click="goNextStep()">Next</button>
             </span>
         </div>
     </div>
+        
+    </form>
+    
+    User: {{pageModel.user.displayName}}
     
     <script>
     $(function(){
         $("#next").kendoMobileButton();
+        $("#finish").kendoMobileButton();
         $("#prev").kendoMobileButton();
         $("#restart").kendoMobileButton();
     });
@@ -221,12 +267,77 @@
     </p>
 </kendo-mobile-view>
 
+<kendo-mobile-view k-title="'Register'" id="register" k-layout="'default'" ng-controller="registerController">
+  <h1>Register</h1>
+
+    <p>
+        Register for your FREE account and get access to a historical Journal of your answers.
+    </p>
+    
+    <form name="form1">
+    <div class="box">
+        
+        <p>
+           <label>Email Address:<br>
+               <input type="email" name="email" ng-model="pageModel.email" ng-required>
+           </label>
+        </p>
+
+        <p>
+           <label>Choose Password:<br>
+               <input type="password" name="password1" ng-model="pageModel.password" ng-required>
+           </label><br>
+            <span class="small">Passwords must be at least 8 characters long.</span>
+        </p>
+
+        <p>
+           <label>Confirm Password:<br>
+               <input type="password" name="password2" ng-model="pageModel.password2" ng-required>
+           </label>
+        </p>
+
+        <div class="error" ng-show="pageModel.showValidationMsg">
+            Please fill in all fields properly and try again.
+        </div>
+        
+        <div class="error" ng-show="pageModel.showPasswordMsg">
+            The passwords you entered do not match.
+        </div>
+        
+        <div class="error" ng-show="pageModel.showPasswordMsg2">
+            Please enter a valid password (at least 8 characters long).
+        </div>
+
+        <div class="error" ng-show="pageModel.errorMessage && pageModel.errorMessage.length > 0">
+            <div>
+                <strong>There was a problem with your last request.</strong>
+            </div>
+            <div>
+                {{pageModel.errorMessage}}    
+            </div>
+        </div>
+        
+        <p>
+            <input id="btnregister" type="button" ng-click="register()" value="Register Now">
+        </p>
+
+        <script>
+        $(function(){
+            $("#btnregister").kendoMobileButton();
+        });
+        </script>
+
+        </div>
+    </form>
+        
+</kendo-mobile-view>
+    
 <kendo-mobile-view k-title="'Sign In'" id="signin" k-layout="'default'" ng-controller="signinController">
   <h1>Sign In</h1>
     
     <p>
         <label>Email Address:<br>
-            <input type="text" ng-model="pageModel.email">
+            <input type="email" ng-model="pageModel.username">
         </label>
     </p>
     
@@ -236,13 +347,21 @@
         </label>
     </p>
     
+    <div class="box" ng-show="pageModel.showValidationMsg">
+        Please fill in all fields.
+    </div>
+    
     <p>
-        <input id="signin" type="button" ng-click="login()" value="Sign In">
+        <input id="btnsignin" type="button" ng-click="signin()" value="Sign In">
     </p>
-
+    
+    <p>
+        Don't have an account yet? <a href="#register">Register now</a>.
+    </p>
+    
     <script>
     $(function(){
-        $("#signin").kendoMobileButton();
+        $("#btnsignin").kendoMobileButton();
     });
     </script>
     
