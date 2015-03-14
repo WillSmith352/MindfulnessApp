@@ -5,368 +5,437 @@
     <meta charset="utf-8" />
     <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
     <link href="styles/main.css" rel="stylesheet" />
-    <link href="styles/forms.css" rel="stylesheet" />
     <script src="kendo/js/jquery.min.js"></script>
+    <script src="scripts/spin.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular-sanitize.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular-route.js"></script>
     <script src="http://cdn.kendostatic.com/2014.3.1029/js/kendo.all.min.js"></script>
     <script src="https://bs-static.cdn.telerik.com/latest/everlive.all.min.js"></script>
+    
     <script src="scripts/app.js"></script>
+    <script src="scripts/homeController.js"></script>
+    <script src="scripts/historyController.js"></script>
+    <script src="scripts/worksheetController.js"></script>
+    <script src="scripts/worksheetService.js"></script>
+    <script src="scripts/registerController.js"></script>
+    <script src="scripts/signinController.js"></script>
+    
 </head>
-<body kendo-mobile-application ng-app="mindfulMobileApp">
+<body kendo-mobile-application="app" ng-app="mindfulMobileApp">
+    <kendo-mobile-layout k-id="'default'">
+        <kendo-mobile-header>
+            <kendo-mobile-nav-bar>
+                <kendo-mobile-button class="back-button" k-align="'left'" k-on-click="goPrev()">&lt; Back</kendo-mobile-button>
+                <kendo-view-title></kendo-view-title>
+                <kendo-mobile-button class="about-button" k-align="'right'" href="#signin">Account</kendo-mobile-button>
+            </kendo-mobile-nav-bar>
+        </kendo-mobile-header>
+   
+        <kendo-mobile-footer>
+            <kendo-mobile-tab-strip>
+                <a href="#home" data-icon="home">Home</a>
+                <a href="#worksheet" data-icon="compose">Worksheet</a>
+                <a href="#history" data-icon="organize">History</a>
+                <a href="#signin" data-icon="contacts">Account</a>
+            </kendo-mobile-tab-strip>
+        </kendo-mobile-footer>
+    </kendo-mobile-layout>
 
-<kendo-mobile-layout k-id="'default'">
-    <kendo-mobile-header>
-        <kendo-mobile-nav-bar>
-            <kendo-view-title></kendo-view-title>
-            <!--<kendo-mobile-button class="about-button" k-align="'right'" data-rel="popover" href="#aboutPop">Account</kendo-mobile-button>-->
-            <kendo-mobile-button class="about-button" k-align="'right'" href="#signin">Account</kendo-mobile-button>
-        </kendo-mobile-nav-bar>
-    </kendo-mobile-header>
+    <kendo-mobile-view k-title="'Welcome'" id="home" k-layout="'default'" ng-controller="homeController">
 
-    <kendo-mobile-footer>
-        <kendo-mobile-tab-strip>
-            <a href="#home" data-icon="contacts">Worksheet</a>
-            <a href="#journal" data-icon="compose">Journal</a>
-            <a href="#history" data-icon="organize">History</a>
-            <a href="#about" data-icon="about">Info</a>
-        </kendo-mobile-tab-strip>
-    </kendo-mobile-footer>
-    
-    <div id="aboutPop" data-role="popover">
-      <div data-role="view">
-          <h3>
-             About this App
-          </h3>
-          
-          <p>
-           The Mobile PopOver widget implicitly instantiates a pane widget for its contents, which allows the containing views to navigate to each other. The pane widget behavior (including default transition, layout, etc.) may be configured from the pane configuration option.
-          </p>
-         <p>
-           The popover dimensions and direction can be configured from the popup configuration option.              
-         </p>
-
-      </div>
-    </div>
-    
-</kendo-mobile-layout>
-    
-<kendo-mobile-view k-title="'Mindfulness'" id="home" ng-controller="homeController" k-layout="'default'">
-    <div class="position-right steps">
-        <span>Step</span>
-        <span>{{worksheetService.currentStep.id}}</span>
-        of
-        <span>{{worksheetService.worksheetData.data().length}}</span>
-    </div>
-    
-    <h4 ng-show="worksheetService.currentStep.letter.length > 0">
-        {{worksheetService.currentStep.letter}} - {{worksheetService.currentStep.title}}
-    </h4>
-    
-    <h4 ng-show="worksheetService.currentStep.letter.length == 0">
-        {{worksheetService.currentStep.title}}
-    </h4>
-    
-    <form name="form1">
-    
-    <div class="box">
-    
-        <div class="text" ng-bind-html="worksheetService.currentStep.description"></div>
+        <h1>Namast&#233;</h1>
         
-        <div ng-show="worksheetService.currentStep.id == 1">
-            <div>
-                <textarea ng-model="stepModel.activatingEvent" rows="8"></textarea>
-                <div class="hint">
-                    {{worksheetService.currentStep.hint}}
-                </div>
-            </div>
-        </div>
-        
-        <div ng-show="worksheetService.currentStep.id == 2">
-            <div>
-                <textarea ng-model="stepModel.beliefSystem" rows="8"></textarea>
-                <div class="hint">
-                    {{worksheetService.currentStep.hint}}
-                </div>
-            </div>
-        </div>
-
-        <div ng-show="worksheetService.currentStep.id == 3">
-            <ul class="checkboxlist">
-                <li><label><input type="radio" name="emotion" ng-model="stepModel.response" value="Anger"> Anger / Irritability</label></li>
-                <li><label><input type="radio" name="emotion" ng-model="stepModel.response" value="Depression"> Depression / Sadness</label></li>
-                <li><label><input type="radio" name="emotion" ng-model="stepModel.response" value="Anxiety"> Anxiety</label></li>
-                <li><label><input type="radio" name="emotion" ng-model="stepModel.response" value="Guilt"> Guilt</label></li>
-            </ul>
-            
-        </div>
-        
-        <div ng-show="worksheetService.currentStep.id == 4">
-            <div class="box">
-                <div>
-                    <strong>Breath</strong>
-                </div>
-                <input type="text" ng-model="stepModel.breath">
-                <div class="hint">e.g. Short, harsh, rapid</div>
-            </div>
-            <div class="box">
-                <div>
-                    <strong>Body</strong>
-                </div>
-                <input type="text" ng-model="stepModel.body">
-                <div class="hint">e.g. rapid heartbeat, tension in chest</div>
-            </div>
-            <div class="box">
-                <div>
-                    <strong>Cranium</strong>
-                </div>
-                <input type="text" ng-model="stepModel.cranium" ng-required="true">
-                <div class="hint">e.g. tension in jaw, narrowed thinking</div>
-            </div>
-        </div>
-        
-        <div ng-show="worksheetService.currentStep.id == 5">
-            <div>
-                <div>{{worksheetService.getDisputeFromEmotion()}}</div>
-                <textarea ng-model="stepModel.dispute1" rows="8"></textarea>
-            </div>
-        </div>
-        
-        <div ng-show="worksheetService.currentStep.id == 6">
-            <select ng-model="stepModel.dispute2" ng-required="true">
-                <option value="">(Select one)</option>
-                <option>0%</option>
-                <option>10%</option>
-                <option>20%</option>
-                <option>30%</option>
-                <option>40%</option>
-                <option>50%</option>
-                <option>60%</option>
-                <option>70%</option>
-                <option>80%</option>
-                <option>90%</option>
-                <option>100%</option>
-            </select>
-        </div>
-        
-        <div ng-show="worksheetService.currentStep.id == 8">
-            <div>
-                <p>
-                    Would you want to maintain the original belief with it's known Emotional and physiological consequences?
-                </p>
-                
-                <p>
-                    <label><input type="radio" name="maintain" ng-model="stepModel.dispute3" value="1"> Yes</label><br>
-                    <label><input type="radio" name="maintain" ng-model="stepModel.dispute3" value="0"> No</label>
-                </p>
-            </div>
-        </div>
-        
-        
-        <div ng-show="worksheetService.currentStep.id == 9">
+        <div ng-cloak>
             <p>
-                How could you make the Belief even worse?
+                Welcome {{pageModel.authenticated ? pageModel.user.displayName : "Guest"}}...
             </p>
-            
-            <div>
-                <textarea ng-model="stepModel.dispute4b" rows="8"></textarea>
-                <div class="hint">
-                    {{worksheetService.currentStep.hint}}
-                </div>
-            </div>
-            
-        </div>
-        
-        <div ng-show="worksheetService.currentStep.id == 10">
             <p>
-                What new Belief and Behavior could bring about a positive emotional consequence?
+                Hello and welcome to the <b>Mindful Rational Living Daily Practice</b> app. To get started, click on the Worksheet button below.
             </p>
-            
-            <div>
-                <textarea ng-model="stepModel.activatingEvent" rows="8"></textarea>
-                <div class="hint">
-                    {{worksheetService.currentStep.hint}}
-                </div>
-            </div>
-            
-        </div>
-        
-        <div ng-show="worksheetService.currentStep.id == 11">
+
             <p>
-                Que?
-            </p>
-        </div>
-        
-        <div ng-show="worksheetService.currentStep.id == 12">
-            <p>
-                <button id="restart" ng-click="startOver()">
-                    Start Over
+                <button id="btnWorksheet" data-role="button" class="nav-button" ng-click="goWorksheet()">
+                    Worksheet
                 </button>
             </p>
-        </div>
 
-        <div ng-show="worksheetService.currentStep.textbox">
-            <input type="text" style="width: 100%" ng-model="stepModel.response">
-        </div>
-        
-        <div ng-show="!isValid() && pageModel.isSubmitted" class="error required">
-            Please enter or select a response before continuing.
-        </div>
-        
-        <div class="navigation">
-            <span ng-show="showPrev()">
-                <button id="prev" ng-click="goPrevStep()">Back</button>
-                |
-            </span>
+            <ul>
+                <li><a href="views/register.html">views/register.html</a></li>
+                <li><a href="register">register</a></li>
+                <li><a href="#register">#register</a></li>
+                <li><a href="/">/</a></li>
+                <li><a href="/signin">/</a></li>
+            </ul>
             
-            <span ng-show="showFinish()">
-                <button id="finish" ng-click="saveWorksheet()">Save Form</button>
-            </span>
+            <script>
+            $(function(){
+                $("#btnWorksheet").kendoMobileButton();
+            });
+            </script>
+        </div>
             
-            <span ng-show="showNext()">
-                <button id="next" ng-click="goNextStep()">Next</button>
-            </span>
-        </div>
-    </div>
-        
-    </form>
-    
-    User: {{pageModel.user.displayName}}
-    
-    <script>
-    $(function(){
-        $("#next").kendoMobileButton();
-        $("#finish").kendoMobileButton();
-        $("#prev").kendoMobileButton();
-        $("#restart").kendoMobileButton();
-    });
-    </script>
-    
-</kendo-mobile-view>
+    </kendo-mobile-view>
 
-<kendo-mobile-view k-title="'About the App'" id="about" ng-controller="aboutController" k-layout="'default'">
-  <h1>About</h1>
+    <kendo-mobile-view k-title="'Worksheet'" id="worksheet" k-layout="'default'" ng-controller="worksheetController">
+        <div id="spinner"></div>
 
-    <p>
-        The Kendo UI mobile framework is designed to help developers build mobile app experiences using HTML and JavaScript that automatically adapt to the native look-and-feel of different mobile platforms. Developers using Kendo UI Mobile can focus on their app's function and content and let the Kendo UI framework handle differences between platforms like iOS and Android.
-    </p>
-
-</kendo-mobile-view>
-
-<kendo-mobile-view k-title="'History'" id="history" k-layout="'default'">
-  <h1>History</h1>
-    <p>
-        The Kendo UI mobile framework is designed to help developers build mobile app experiences using HTML and JavaScript that automatically adapt to the native look-and-feel of different mobile platforms. Developers using Kendo UI Mobile can focus on their app's function and content and let the Kendo UI framework handle differences between platforms like iOS and Android.
-    </p>
-</kendo-mobile-view>
-
-<kendo-mobile-view k-title="'Journal'" id="journal" k-layout="'default'">
-  <h1>Journal</h1>
-    <p>
-        The Kendo UI mobile framework is designed to help developers build mobile app experiences using HTML and JavaScript that automatically adapt to the native look-and-feel of different mobile platforms. Developers using Kendo UI Mobile can focus on their app's function and content and let the Kendo UI framework handle differences between platforms like iOS and Android.
-    </p>
-</kendo-mobile-view>
-
-<kendo-mobile-view k-title="'Register'" id="register" k-layout="'default'" ng-controller="registerController">
-  <h1>Register</h1>
-
-    <p>
-        Register for your FREE account and get access to a historical Journal of your answers.
-    </p>
-    
-    <form name="form1">
-    <div class="box">
-        
-        <p>
-           <label>Email Address:<br>
-               <input type="email" name="email" ng-model="pageModel.email" ng-required>
-           </label>
-        </p>
-
-        <p>
-           <label>Choose Password:<br>
-               <input type="password" name="password1" ng-model="pageModel.password" ng-required>
-           </label><br>
-            <span class="small">Passwords must be at least 8 characters long.</span>
-        </p>
-
-        <p>
-           <label>Confirm Password:<br>
-               <input type="password" name="password2" ng-model="pageModel.password2" ng-required>
-           </label>
-        </p>
-
-        <div class="error" ng-show="pageModel.showValidationMsg">
-            Please fill in all fields properly and try again.
-        </div>
-        
-        <div class="error" ng-show="pageModel.showPasswordMsg">
-            The passwords you entered do not match.
-        </div>
-        
-        <div class="error" ng-show="pageModel.showPasswordMsg2">
-            Please enter a valid password (at least 8 characters long).
-        </div>
-
-        <div class="error" ng-show="pageModel.errorMessage && pageModel.errorMessage.length > 0">
+        <div ng-cloak>
             <div>
-                <strong>There was a problem with your last request.</strong>
+                <div class="position-right steps" ng-show="worksheetService.currentStep.id < 12">
+                    <span>{{worksheetService.currentStep.id}}</span>
+                    of
+                    <span>{{worksheetService.worksheetData.data().length - 1}}</span>
+                </div>
+
+                <h4 ng-show="worksheetService.currentStep.letter.length > 0">
+                    {{worksheetService.currentStep.letter}} - {{worksheetService.currentStep.title}}
+                </h4>
+
+                <h4 ng-show="worksheetService.currentStep.letter.length == 0">
+                    {{worksheetService.currentStep.title}}
+                </h4>            
             </div>
-            <div>
-                {{pageModel.errorMessage}}    
+
+            <form name="form1">
+
+            <div class="box">
+
+                <div class="text" ng-bind-html="worksheetService.currentStep.description"></div>
+
+                <div ng-show="worksheetService.currentStep.id == 1">
+                    <div>
+                        <textarea ng-model="stepModel.ActivatingEvent" rows="8"></textarea>
+                        <div class="hint">
+                            {{worksheetService.currentStep.hint}}
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-show="worksheetService.currentStep.id == 2">
+                    <div>
+                        <textarea ng-model="stepModel.BeliefSystem" rows="8"></textarea>
+                        <div class="hint">
+                            {{worksheetService.currentStep.hint}}
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-show="worksheetService.currentStep.id == 3">
+                    <ul class="checkboxlist">
+                        <li><label><input type="radio" name="emotion" ng-model="stepModel.EmotionalConsequence" value="Anger"> Anger / Irritability</label></li>
+                        <li><label><input type="radio" name="emotion" ng-model="stepModel.EmotionalConsequence" value="Depression"> Depression / Sadness</label></li>
+                        <li><label><input type="radio" name="emotion" ng-model="stepModel.EmotionalConsequence" value="Anxiety"> Anxiety</label></li>
+                        <li><label><input type="radio" name="emotion" ng-model="stepModel.EmotionalConsequence" value="Guilt"> Guilt</label></li>
+                    </ul>
+
+                </div>
+
+                <div ng-show="worksheetService.currentStep.id == 4">
+                        <div>
+                            <strong>Breath</strong>
+                        </div>
+                        <input type="text" ng-model="pageModel.breath">
+                        <div class="hint">e.g. Short, harsh, rapid</div>
+                        <div>
+                            <strong>Body</strong>
+                        </div>
+                        <input type="text" ng-model="pageModel.body">
+                        <div class="hint">e.g. rapid heartbeat, tension in chest</div>
+                        <div>
+                            <strong>Cranium</strong>
+                        </div>
+                        <input type="text" ng-model="pageModel.cranium">
+                        <div class="hint">e.g. tension in jaw, narrowed thinking</div>
+
+                </div>
+
+                <div ng-show="worksheetService.currentStep.id == 5">
+                    <div>
+                        <div>{{getDisputeFromEmotion()}}</div>
+                        <textarea ng-model="stepModel.Dispute1" rows="8"></textarea>
+                    </div>
+                </div>
+
+                <div ng-show="worksheetService.currentStep.id == 6">
+                    <select ng-model="stepModel.Dispute2" ng-required="true">
+                        <option value="">(Select one)</option>
+                        <option>0%</option>
+                        <option>10%</option>
+                        <option>20%</option>
+                        <option>30%</option>
+                        <option>40%</option>
+                        <option>50%</option>
+                        <option>60%</option>
+                        <option>70%</option>
+                        <option>80%</option>
+                        <option>90%</option>
+                        <option>100%</option>
+                    </select>
+                </div>
+
+                <div ng-show="worksheetService.currentStep.id == 7">
+                    <div>
+                        <textarea ng-model="stepModel.Dispute3" rows="8"></textarea>
+                        <div class="hint">
+                            {{worksheetService.currentStep.hint}}
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-show="worksheetService.currentStep.id == 8">
+                    <div>
+                        <div>
+                            Would you want to maintain the original belief with it's known Emotional and physiological consequences?
+                        </div>
+                        <div>
+                            &nbsp;
+                        </div>
+                        <div>
+                            <label><input type="radio" name="maintain" ng-model="stepModel.Dispute4a" value="Yes"> Yes</label><br>
+                            <label><input type="radio" name="maintain" ng-model="stepModel.Dispute4a" value="No"> No</label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div ng-show="worksheetService.currentStep.id == 9">
+                    <div>
+                        How could you make the Belief even worse?
+                    </div>
+                    <div>
+                        &nbsp;
+                    </div>
+                    <div>
+                        <textarea ng-model="stepModel.Dispute4b" rows="8"></textarea>
+                        <div class="hint">
+                            {{worksheetService.currentStep.hint}}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div ng-show="worksheetService.currentStep.id == 10">
+                    <div>
+                        What new Belief and Behavior could bring about a positive emotional consequence?
+                    </div>
+                    <div>
+                        &nbsp;
+                    </div>
+                    <div>
+                        <textarea ng-model="stepModel.Dispute4c" rows="8"></textarea>
+                        <div class="hint">
+                            {{worksheetService.currentStep.hint}}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div ng-show="worksheetService.currentStep.id == 11">
+                    <div>
+                        <textarea ng-model="stepModel.ChangeInBehavior" rows="8"></textarea>
+                        <div class="hint">
+                            {{worksheetService.currentStep.hint}}
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-show="worksheetService.currentStep.id == 12">
+                    <div>
+                        <button id="restart" ng-click="startOver()" class="button">
+                            Start Over
+                        </button>
+                        
+                    </div>
+                </div>
+
+                <div ng-show="worksheetService.currentStep.textbox">
+                    <input type="text" style="width: 100%" ng-model="stepModel.response">
+                </div>
+
+                <div ng-show="!isValid() && pageModel.isSubmitted" class="error required">
+                    Please enter or select a response before continuing.
+                </div>
+
+                <div class="navigation">
+                    <span ng-show="showFinish()" class="position-right">
+                        <button id="finish" ng-click="saveWorksheet()" class="nav-button">FINISH</button>
+                    </span>
+
+                    <span ng-show="showPrev()" class="position-left">
+                        <button id="prev" ng-click="goPrevStep()" data-icon="icon-back" class="button">&lt;&lt; BACK</button>
+                    </span>
+                    
+                    <span ng-show="showNext()" class="position-right">
+                        <button id="next" ng-click="goNextStep()" data-icon="details" class="nav-button">NEXT STEP</button>
+                    </span>
+                </div>
             </div>
+
+            </form>
         </div>
-        
-        <p>
-            <input id="btnregister" type="button" ng-click="register()" value="Register Now">
-        </p>
 
         <script>
         $(function(){
-            $("#btnregister").kendoMobileButton();
+            $("#next").kendoMobileButton();
+            $("#finish").kendoMobileButton();
+            $("#prev").kendoMobileButton();
+            $("#restart").kendoMobileButton();
         });
         </script>
 
-        </div>
-    </form>
+    </kendo-mobile-view>
+
+
+    <kendo-mobile-view k-title="'History'" id="history" k-layout="'default'">
+      <div ng-cloak>
+        <h1>History</h1>
+        <p>
+            The Kendo UI mobile framework is designed to help developers build mobile app experiences using HTML and JavaScript that automatically adapt to the native look-and-feel of different mobile platforms. Developers using Kendo UI Mobile can focus on their app's function and content and let the Kendo UI framework handle differences between platforms like iOS and Android.
+        </p>
+
+        {{pageModel.currentStep}}
         
-</kendo-mobile-view>
-    
-<kendo-mobile-view k-title="'Sign In'" id="signin" k-layout="'default'" ng-controller="signinController">
-  <h1>Sign In</h1>
-    
-    <p>
-        <label>Email Address:<br>
-            <input type="email" ng-model="pageModel.username">
-        </label>
-    </p>
-    
-    <p>
-        <label>Password:<br>
-            <input type="password" ng-model="pageModel.password">
-        </label>
-    </p>
-    
-    <div class="box" ng-show="pageModel.showValidationMsg">
-        Please fill in all fields.
-    </div>
-    
-    <p>
-        <input id="btnsignin" type="button" ng-click="signin()" value="Sign In">
-    </p>
-    
-    <p>
-        Don't have an account yet? <a href="#register">Register now</a>.
-    </p>
-    
-    <script>
-    $(function(){
-        $("#btnsignin").kendoMobileButton();
-    });
-    </script>
-    
-</kendo-mobile-view>
-    
+        <spin-indicator></spin-indicator>
+      </div>
+    </kendo-mobile-view>
+
+    <kendo-mobile-view k-title="'Sign In'" id="signin" k-layout="'default'" ng-controller="signinController">
+        <div id="spinner"></div>
+
+        <h1>Namast&#233;</h1>
+
+        <div ng-if="pageModel.authenticated">
+            <p>
+                <strong>It looks as though you are already signed in :-)</strong>
+            </p>
+
+            <p>
+                <a href="userSignout()">Click here</a> to sign out.
+            </p>
+        </div>
+
+        <div ng-if="!pageModel.authenticated">
+            <p>
+                Registered useres should enter their credentials below to associate their information with their account.
+            </p>
+
+            <p>
+                <label>Email Address:<br>
+                    <input type="email" ng-required ng-model="pageModel.username">
+                </label>
+            </p>
+
+            <p>
+                <label>Password:<br>
+                    <input type="password" ng-required ng-model="pageModel.password">
+                </label>
+            </p>
+
+            <div class="box" ng-show="pageModel.showValidationMessage">
+                Please fill in all fields.
+            </div>
+
+            <div class="box" ng-show="pageModel.showLoginMessage">
+                Invalid credentials. Please try again.
+            </div>
+
+            <p>
+                <input id="btnsignin" type="button" class="button" ng-click="userSignin()" value="Sign In">
+            </p>
+
+            <p>
+                Don't have an account yet? <a href="#register">Register now</a>.
+            </p>
+        </div>
+
+        <script>
+        $(function(){
+            $("#btnsignin").kendoMobileButton();
+        });
+        </script>
+
+    </kendo-mobile-view>
+
+    <kendo-mobile-view k-title="'About'" id="about" k-layout="'default'">
+        <h1>
+            About
+        </h1>
+
+        <p>
+            About the app.
+        </p>
+    </kendo-mobile-view>
+
+    <kendo-mobile-view k-title="'Register'" id="register" k-layout="'default'" ng-controller="registerController">
+        <h1>Register</h1>
+
+        <p>
+            Register for your FREE account and get access to a historical Journal of your answers.
+        </p>
+
+        <div id="spinner"></div>
+
+        <form name="form1">
+        <div class="box">
+
+            <p>
+               <label>Email Address:<br>
+                   <input type="email" name="email" ng-model="pageModel.email" ng-required>
+               </label>
+            </p>
+
+            <p>
+               <label>Choose Password:<br>
+                   <input type="password" name="password1" ng-model="pageModel.password" ng-required>
+               </label><br>
+                <span class="small">Passwords must be at least 8 characters long.</span>
+            </p>
+
+            <p>
+               <label>Confirm Password:<br>
+                   <input type="password" name="password2" ng-model="pageModel.password2" ng-required>
+               </label>
+            </p>
+
+            <div class="error" ng-show="pageModel.showValidationMsg">
+                Please fill in all fields properly and try again.
+            </div>
+
+            <div class="error" ng-show="pageModel.showPasswordMsg">
+                The passwords you entered do not match.
+            </div>
+
+            <div class="error" ng-show="pageModel.showPasswordMsg2">
+                Please enter a valid password (at least 8 characters long).
+            </div>
+
+            <div class="error" ng-show="pageModel.errorMessage && pageModel.errorMessage.length > 0">
+                <div>
+                    <strong>There was a problem with your last request.</strong>
+                </div>
+                <div>
+                    {{pageModel.errorMessage}}    
+                </div>
+            </div>
+
+            <p>
+                <input id="btnregister" type="button" class="button" ng-click="register()" value="Register Now">
+            </p>
+
+            <p>
+                Already registered? <a href="#signin">Sign in here</a>.
+            </p>
+
+            <script>
+            $(function(){
+                $("#btnregister").kendoMobileButton();
+            });
+            </script>
+
+            </div>
+        </form>
+    </kendo-mobile-view>
     
 </body>
 </html>
