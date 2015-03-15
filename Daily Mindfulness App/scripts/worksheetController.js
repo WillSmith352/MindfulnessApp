@@ -32,7 +32,7 @@ myApp.controller('worksheetController', ['$scope', 'worksheetService', function(
             if (data) {
                 //console.log("Have a user: " + data.DisplayName);
                 $scope.pageModel.displayName = data.DisplayName;
-                $scope.apply();
+                //$scope.$apply();
             }
             else {
                 console.log("No user");

@@ -2,7 +2,7 @@
     skin: "flat",
     layout: "default"
 });*/
-//var app = new kendo.mobile.Application();
+//var app = new kendo.mobile.Application(document.body);
 var myApp = angular.module('mindfulMobileApp', [ 'kendo.directives', 'ngSanitize', 'ngRoute' ])
     .run(['worksheetService', function(worksheetService){
             worksheetService.init();
@@ -41,11 +41,8 @@ var myApp = angular.module('mindfulMobileApp', [ 'kendo.directives', 'ngSanitize
                   top: '50%', // Top position relative to parent
                   left: '50%' // Left position relative to parent
                 };
-                //var target = document.getElementById("foo");
-                //worksheetService.spinner = new Spinner(opts).spin(target);
-                //worksheetService.spinner = new Spinner(opts).spin(element);
-                var foo = new Spinner(opts).spin(element);
-
+                worksheetService.spinner = new Spinner(opts)
+                worksheetService.spinner.spin(element);
             }
         }
     }]);

@@ -7,12 +7,12 @@ myApp.controller('signinController', ['$scope', '$location', 'worksheetService',
             showLoginMessage: false
         }
         
-        worksheetService.getCurrentUser(function () {
+       worksheetService.getCurrentUser(function (data) {
             //console.log("here with user: " + user.displayName);
-            if (!user) {
+            if (data) {
                 $scope.pageModel.authenticated = true;
-                //$scope.apply();
-            }            
+                //$scope.$apply();
+            }
         });
         
         $scope.userSignout = function() {
@@ -20,21 +20,20 @@ myApp.controller('signinController', ['$scope', '$location', 'worksheetService',
             worksheetService.signOut(function() {
                 $scope.pageModel.authenticated = false;
                 worksheetService.hideLoading();
+                $scope.$apply();
             }, function() {
                 worksheetService.hideLoading();
             });
         };
         
         $scope.userSignin = function() {
-            //console.log("hello");
-            if ($scope.$invalid || !$scope.pageModel.username || ($scope.pageModel.username.length === 0 ||
-               $scope.pageModel.password.length === 0))
-            {
+            if ($scope.$invalid || !$scope.pageModel.username || ($scope.pageModel.username.length === 0 || $scope.pageModel.password.length === 0)) {
                 $scope.pageModel.showValidationMessage = true;
                 return;
             }
-            //console.log("hello");
+            
             $scope.pageModel.showValidationMessage = false;
+            
             worksheetService.showLoading();
             
             //try
@@ -44,23 +43,27 @@ myApp.controller('signinController', ['$scope', '$location', 'worksheetService',
                     function (data) {
                         //console.log(JSON.stringify(data));
                         if (data && data.result) {
-                            worksheetService.setAccessToken(data.result.access_token);
                             console.log("Fresh token: " + worksheetService.getAccessToken());
+                            worksheetService.setAccessToken(data.result.access_token);
+                            worksheetService.currentUser = data.result;
                             worksheetService.hideLoading();
+                            $scope.pageModel.authenticated = true;
                             //console.log("logged in!");
                             //window.location.hash="home";
-                            $location.hash("home");
+                            //$location.hash("home");
                         }
                         else {
                             worksheetService.hideLoading();
                             $scope.pageModel.showLoginMessage = true;
                         }
+                        $scope.$apply();
                     },
                     function(error){
                         //console.log("error:");
                         //console.log(JSON.stringify(error));
                         worksheetService.hideLoading();
                         $scope.pageModel.showLoginMessage = true;
+                        $scope.$apply();
                 });
                 
             //}
@@ -90,7 +93,8 @@ myApp.controller('signinController', ['$scope', '$location', 'worksheetService',
                   left: '50%' // Left position relative to parent
                 };
                 var target = $("#spinner");
-                $scope.spinner = new Spinner(opts).spin(target);
+                $scope.spinner = new Spinner(opts);
+                $scope.spinner.spin(target);
         };
         
         $scope.hideLoading = function() {

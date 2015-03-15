@@ -38,29 +38,32 @@
     <kendo-mobile-view k-title="'Home'" id="home" k-layout="'default'" ng-controller="homeController">
         <h1>Namast&#233;</h1>
         
-        <div ng-cloak>
-            <p>
-                Welcome {{pageModel.authenticated ? pageModel.user.displayName : "Guest"}}...
-            </p>
-            <p>
-                Hello and welcome to the <b>Mindful Rational Living Daily Practice</b> app. To get started, click on the Worksheet button below.
-            </p>
+        <div ng-cloak class="box">
+            <div>
+                Welcome {{pageModel.authenticated ? pageModel.displayName : "Guest"}}...
+            </div>
+            <div>
+                &nbsp;
+            </div>
+            <div>
+                Hello and welcome to the <b>Mindful Rational Living Daily Practice</b> app. To get started, click on the Worksheet button below. If you already have an account
+                <a kendo-mobile-button class="text-button" href="views/signin.html">Sign in here</a>
+                otherwise <a kendo-mobile-button class="text-button" href="views/register.html">Register now</a>.
+            </div>
             <div>
                 Auth: {{pageModel.authenticated}}
             </div>
-            <p>
+            <div>
+                &nbsp;
+            </div>
+            <div>
                 <a id="btnWorksheet" kendo-mobile-button class="nav-button" href="views/worksheet.html">
                     Worksheet
                 </a>
                 
-                <a id="btnSignin" kendo-mobile-button class="nav-button" href="views/signin.html" ng-if="!pageModel.authenticated">
-                    Sign In
-                </a>
-            </p>
+                <a id="btnSignin" kendo-mobile-button class="nav-button" href="views/signin.html" ng-if="!pageModel.authenticated">Sign In</a>
+            </div>
             
-            <ul>
-                <li><a kendo-mobile-button class="text-button" href="views/register.html">Register</a></li>
-            </ul>
         </div>
             
     </kendo-mobile-view>
