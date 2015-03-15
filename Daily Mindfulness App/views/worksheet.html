@@ -1,0 +1,208 @@
+<kendo-mobile-view k-title="'Worksheet'" id="worksheet" k-layout="'default'" ng-controller="worksheetController">
+<!--<div data-role="view" data-title="Worksheet" data-layout="'default'" ng-controller="worksheetController">-->
+    <div id="spinner"></div>
+    <div>
+        <div>
+            <div class="position-right steps" ng-show="worksheetService.currentStep.id < 12">
+                <span>{{worksheetService.currentStep.id}}</span>
+                of
+                <span>{{worksheetService.worksheetData.data().length - 1}}</span>
+            </div>
+
+            <h4 ng-show="worksheetService.currentStep.letter.length > 0">
+                {{worksheetService.currentStep.letter}} - {{worksheetService.currentStep.title}}
+            </h4>
+
+            <h4 ng-show="worksheetService.currentStep.letter.length == 0">
+                {{worksheetService.currentStep.title}}
+            </h4>            
+        </div>
+
+        <form name="form1">
+
+        <div class="box">
+
+            <div class="text" ng-bind-html="worksheetService.currentStep.description"></div>
+
+            <div ng-show="worksheetService.currentStep.id == 1">
+                <div>
+                    <textarea ng-model="stepModel.ActivatingEvent" rows="8"></textarea>
+                    <div class="hint">
+                        {{worksheetService.currentStep.hint}}
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="worksheetService.currentStep.id == 2">
+                <div>
+                    <textarea ng-model="stepModel.BeliefSystem" rows="8"></textarea>
+                    <div class="hint">
+                        {{worksheetService.currentStep.hint}}
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="worksheetService.currentStep.id == 3">
+                <ul class="checkboxlist">
+                    <li><label><input type="radio" name="emotion" ng-model="stepModel.EmotionalConsequence" value="Anger"> Anger / Irritability</label></li>
+                    <li><label><input type="radio" name="emotion" ng-model="stepModel.EmotionalConsequence" value="Depression"> Depression / Sadness</label></li>
+                    <li><label><input type="radio" name="emotion" ng-model="stepModel.EmotionalConsequence" value="Anxiety"> Anxiety</label></li>
+                    <li><label><input type="radio" name="emotion" ng-model="stepModel.EmotionalConsequence" value="Guilt"> Guilt</label></li>
+                </ul>
+
+            </div>
+
+            <div ng-show="worksheetService.currentStep.id == 4">
+                    <div>
+                        <strong>Breath</strong>
+                    </div>
+                    <input type="text" ng-model="pageModel.breath">
+                    <div class="hint">e.g. Short, harsh, rapid</div>
+                    <div>
+                        <strong>Body</strong>
+                    </div>
+                    <input type="text" ng-model="pageModel.body">
+                    <div class="hint">e.g. rapid heartbeat, tension in chest</div>
+                    <div>
+                        <strong>Cranium</strong>
+                    </div>
+                    <input type="text" ng-model="pageModel.cranium">
+                    <div class="hint">e.g. tension in jaw, narrowed thinking</div>
+
+            </div>
+
+            <div ng-show="worksheetService.currentStep.id == 5">
+                <div>
+                    <div>{{getDisputeFromEmotion()}}</div>
+                    <textarea ng-model="stepModel.Dispute1" rows="8"></textarea>
+                </div>
+            </div>
+
+            <div ng-show="worksheetService.currentStep.id == 6">
+                <select ng-model="stepModel.Dispute2" ng-required="true">
+                    <option value="">(Select one)</option>
+                    <option>0%</option>
+                    <option>10%</option>
+                    <option>20%</option>
+                    <option>30%</option>
+                    <option>40%</option>
+                    <option>50%</option>
+                    <option>60%</option>
+                    <option>70%</option>
+                    <option>80%</option>
+                    <option>90%</option>
+                    <option>100%</option>
+                </select>
+            </div>
+
+            <div ng-show="worksheetService.currentStep.id == 7">
+                <div>
+                    <textarea ng-model="stepModel.Dispute3" rows="8"></textarea>
+                    <div class="hint">
+                        {{worksheetService.currentStep.hint}}
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="worksheetService.currentStep.id == 8">
+                <div>
+                    <div>
+                        Would you want to maintain the original belief with it's known Emotional and physiological consequences?
+                    </div>
+                    <div>
+                        &nbsp;
+                    </div>
+                    <div>
+                        <label><input type="radio" name="maintain" ng-model="stepModel.Dispute4a" value="Yes"> Yes</label><br>
+                        <label><input type="radio" name="maintain" ng-model="stepModel.Dispute4a" value="No"> No</label>
+                    </div>
+                </div>
+            </div>
+
+
+            <div ng-show="worksheetService.currentStep.id == 9">
+                <div>
+                    How could you make the Belief even worse?
+                </div>
+                <div>
+                    &nbsp;
+                </div>
+                <div>
+                    <textarea ng-model="stepModel.Dispute4b" rows="8"></textarea>
+                    <div class="hint">
+                        {{worksheetService.currentStep.hint}}
+                    </div>
+                </div>
+
+            </div>
+
+            <div ng-show="worksheetService.currentStep.id == 10">
+                <div>
+                    What new Belief and Behavior could bring about a positive emotional consequence?
+                </div>
+                <div>
+                    &nbsp;
+                </div>
+                <div>
+                    <textarea ng-model="stepModel.Dispute4c" rows="8"></textarea>
+                    <div class="hint">
+                        {{worksheetService.currentStep.hint}}
+                    </div>
+                </div>
+
+            </div>
+
+            <div ng-show="worksheetService.currentStep.id == 11">
+                <div>
+                    <textarea ng-model="stepModel.ChangeInBehavior" rows="8"></textarea>
+                    <div class="hint">
+                        {{worksheetService.currentStep.hint}}
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="worksheetService.currentStep.id == 12">
+                <div>
+                    <button id="restart" ng-click="startOver()" class="button">
+                        Start Over
+                    </button>
+
+                </div>
+            </div>
+
+            <div ng-show="worksheetService.currentStep.textbox">
+                <input type="text" style="width: 100%" ng-model="stepModel.response">
+            </div>
+
+            <div ng-show="!isValid() && pageModel.isSubmitted" class="error required">
+                Please enter or select a response before continuing.
+            </div>
+
+            <div class="navigation">
+                <span ng-show="showFinish()" class="position-right">
+                    <button id="finish" ng-click="saveWorksheet()" class="nav-button">FINISH</button>
+                </span>
+
+                <span ng-show="showPrev()" class="position-left">
+                    <button id="prev" ng-click="goPrevStep()" data-icon="icon-back" class="button">&lt;&lt; BACK</button>
+                </span>
+
+                <span ng-show="showNext()" class="position-right">
+                    <button id="next" ng-click="goNextStep()" data-icon="details" class="nav-button">NEXT STEP</button>
+                </span>
+            </div>
+        </div>
+
+        </form>
+    </div>
+
+    <script>
+    $(function(){
+        $("#next").kendoMobileButton();
+        $("#finish").kendoMobileButton();
+        $("#prev").kendoMobileButton();
+        $("#restart").kendoMobileButton();
+    });
+    </script>
+<!--</div>-->
+</kendo-mobile-view>

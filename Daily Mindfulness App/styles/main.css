@@ -96,6 +96,12 @@ select, textarea, input[type="text"], input[type="password"], input[type="email"
     background-color: #fff !important;
 }
 
+.text-button {
+    border: none !important;
+    padding: 0 !important;
+    font-size: 1.0em !important;
+}
+
 .navigation {
     padding-top: 20px;
     padding-bottom: 10px;

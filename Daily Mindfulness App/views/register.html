@@ -1,2 +1,67 @@
-<!--
--->
+<kendo-mobile-view k-title="'Register'" id="register" k-layout="'default'" ng-controller="registerController">
+    <h1>Register</h1>
+
+    <p>
+        Register for your FREE account and get access to a historical Journal of your answers.
+    </p>
+
+    <div id="spinner"></div>
+
+    <form name="form1">
+
+        <p>
+           <label>Email Address:<br>
+               <input type="email" name="email" ng-model="pageModel.email" ng-required>
+           </label>
+        </p>
+
+        <p>
+           <label>Choose Password:<br>
+               <input type="password" name="password1" ng-model="pageModel.password" ng-required>
+           </label><br>
+            <span class="small">Passwords must be at least 8 characters long.</span>
+        </p>
+
+        <p>
+           <label>Confirm Password:<br>
+               <input type="password" name="password2" ng-model="pageModel.password2" ng-required>
+           </label>
+        </p>
+
+        <div class="error" ng-show="pageModel.showValidationMsg">
+            Please fill in all fields properly and try again.
+        </div>
+
+        <div class="error" ng-show="pageModel.showPasswordMsg">
+            The passwords you entered do not match.
+        </div>
+
+        <div class="error" ng-show="pageModel.showPasswordMsg2">
+            Please enter a valid password (at least 8 characters long).
+        </div>
+
+        <div class="error" ng-show="pageModel.errorMessage && pageModel.errorMessage.length > 0">
+            <div>
+                <strong>There was a problem with your last request.</strong>
+            </div>
+            <div>
+                {{pageModel.errorMessage}}    
+            </div>
+        </div>
+
+        <p>
+            <input id="btnregister" type="button" class="button" ng-click="register()" value="Register Now">
+        </p>
+
+        <p>
+            Already registered? <a kendo-mobile-button class="text-button" href="views/signin.html">Sign in here</a>.
+        </p>
+
+        <script>
+        $(function(){
+            $("#btnregister").kendoMobileButton();
+        });
+        </script>
+
+    </form>
+</kendo-mobile-view>

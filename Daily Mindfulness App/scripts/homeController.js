@@ -20,8 +20,17 @@ myApp.controller('homeController', ['$scope', '$location', 'worksheetService', f
             console.log("Error: " + error);
     });
     
+    //$scope.application = kendo.mobile.appplication;
+    
     $scope.goWorksheet = function() {
-        $location.hash("worksheet");
+        //$location.hash("views/worksheet.html");
+        $location.path("views/worksheet.html");
+        //location.href = "views/worksheet.html";
+        //app.navigate("views/worksheet.html");
+    };
+    
+    $scope.goSignin = function() {
+        app.navigate("views/signin.html");
     };
     
 }]);

@@ -250,16 +250,17 @@ myApp
         };
     
         this.showLoading = function() {
-            //if (this.spinner) {
-                app.pane.loader.show()
-                //this.spinner.spin();
-            //}
+            if (this.spinner) {
+                //app.pane.loader.show()
+                this.spinner.spin();
+            }
         };
     
         this.hideLoading = function() {
-            //if (this.spinner) {
-                app.pane.loader.hide()
-            //}
+            if (this.spinner) {
+                //app.pane.loader.hide()
+                this.spinner.stop();
+            }
         };
     
         this.saveResponse = function(pageModel) {

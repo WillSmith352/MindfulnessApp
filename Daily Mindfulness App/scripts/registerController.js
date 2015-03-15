@@ -1,6 +1,4 @@
-//angular.module('mindfulMobileApp', [])
-myApp
-.controller('registerController', ['$scope', 'worksheetService', function($scope, worksheetService) {
+myApp.controller('registerController', ['$scope', 'worksheetService', function($scope, worksheetService) {
         $scope.pageModel = {
             email: "",
             password: "",
