@@ -1,0 +1,60 @@
+<kendo-mobile-view k-title="'Sign In'" id="signin" data-layout="'default'" ng-controller="signinController">
+    <div id="spinner"></div>
+
+    <h1>Namast&#233;</h1>
+
+    <div ng-if="pageModel.authenticated">
+        <p>
+            <strong>It looks as though you are already signed in :-)</strong>
+        </p>
+
+        <p>
+            <a kendo-mobile-button class="text-button" href="#home">Home</a>
+        </p>
+        
+        <p>
+            <a href="userSignout()">Click here</a> to sign out.
+        </p>
+    </div>
+
+    <div ng-if="!pageModel.authenticated">
+        <p>
+            Registered useres should enter their credentials below to associate their information with their account.
+        </p>
+
+        <p>
+            <label>Email Address:<br>
+                <input type="email" ng-required ng-model="pageModel.username">
+            </label>
+        </p>
+
+        <p>
+            <label>Password:<br>
+                <input type="password" ng-required ng-model="pageModel.password">
+            </label>
+        </p>
+
+        <div class="box" ng-show="pageModel.showValidationMessage">
+            Please fill in all fields.
+        </div>
+
+        <div class="box" ng-show="pageModel.showLoginMessage">
+            Invalid credentials. Please try again.
+        </div>
+
+        <p>
+            <input id="btnsignin" type="button" class="button" ng-click="userSignin()" value="Sign In">
+        </p>
+
+        <p>
+            Don't have an account yet? <a kendo-mobile-button class="text-button" href="views/register.html">Register now</a>.
+        </p>
+    </div>
+
+    <script>
+    $(function(){
+        $("#btnsignin").kendoMobileButton();
+    });
+    </script>
+
+</kendo-mobile-view>
