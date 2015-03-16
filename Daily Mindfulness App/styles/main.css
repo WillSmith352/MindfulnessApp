@@ -4,7 +4,7 @@ body, html {
     width: 100%;
 }
 
-body, p, td, div {
+body, p, td, div, textarea, input, select {
     font-family: Calibri, 'HelveticaNeue Ultra Light', 'Roboto Light', 'Slate Light', 'Segoe WP', NokiaPureTextLight, sans-serif !important;
 }
 
@@ -25,6 +25,11 @@ h4 {
 
 .checkboxlist {
     margin: 0;
+
+}
+
+.checkboxlist label {
+  font-size: 1.6em !important;
 }
 
 .checkboxlist li {
@@ -61,27 +66,30 @@ select, textarea, input[type="text"], input[type="password"], input[type="email"
     width: 100%;
     padding: 8px 8px 8px 8px !important;
     /*margin: -8px -8px -8px -8px !important;*/
-    /*font-size: 1.6em;*/
+    font-size: 1.6em;
     /*-webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;*/
-    background-clip: border-box !important;
-    border-top-color: rgb(0, 122, 255);
-    border-top-style: solid;
-    border-top-width: 1px;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-    border-right-color: rgb(0, 122, 255);
-    border-right-style: solid;
-    border-right-width: 1px;
-    border-left-color: rgb(0, 122, 255);
-    border-left-style: solid;
-    border-left-width: 1px;
-    border-bottom-color: rgb(0, 122, 255);
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
+
+  /*
+  background-clip: border-box !important;
+  border-top-color: rgb(0, 122, 255);
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-right-color: rgb(0, 122, 255);
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-left-color: rgb(0, 122, 255);
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-bottom-color: rgb(0, 122, 255);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  */
 }
 
 .nav-button {
@@ -97,10 +105,21 @@ select, textarea, input[type="text"], input[type="password"], input[type="email"
 }
 
 .text-button {
+  background-color: transparent !important;
+  text-decoration: underline !important;
+}
+
+.text-button, .text-button-white {
     border: none !important;
     padding: 0 !important;
     font-size: 1.0em !important;
 }
+
+/*.km-ios7 .km-widget a,*/
+.text-button-white a, .text-button-white a:visited {
+    color: white !important;
+}
+
 
 .navigation {
     padding-top: 20px;
@@ -120,6 +139,21 @@ select, textarea, input[type="text"], input[type="password"], input[type="email"
 .hint {
     opacity: 0.75;
     font-size: 0.9em;
+}
+
+.error-panel {
+    background-color: orange;
+    font-weight: 0.8em;
+    color: white;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    background-clip: border-box;
+}
+
+.error-panel {
+    
 }
 
 .icon-next:after, .icon-next:before {

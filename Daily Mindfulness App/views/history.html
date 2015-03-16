@@ -1,9 +1,26 @@
-<kendo-mobile-view id="history" data-layout="'default'" ng-controller="historyController">
+<kendo-mobile-view id="history" k-title="'History'" data-layout="'default'" ng-controller="historyController">
     <div ng-cloak>
         <h1>History</h1>
         <p>
-            The Kendo UI mobile framework is designed to help developers build mobile app experiences using HTML and JavaScript that automatically adapt to the native look-and-feel of different mobile platforms. Developers using Kendo UI Mobile can focus on their app's function and content and let the Kendo UI framework handle differences between platforms like iOS and Android.
+            Below are your previous worksheets.
         </p>
         <spin-indicator></spin-indicator>
+      
+      <div ng-if="!worksheetData && worksheetData.length == 0">
+        <strong>No worksheet entries available.</strong>
+      </div>
+      
+      <kendo-mobile-list-view k-data-source="worksheetData" k-template="'${CreatedAt}'">
+        
+      </kendo-mobile-list-view>
+      
+      <ul id="dataList" data-role="listview" data-source="worksheetData" data-template="'${CreatedAt}'"></ul>
+      
+      <script type="text/x-kendo-template" id="foo-template">
+        #: ActivatingEvent # - #: ModifiedAt #
+      </script>
+      
+      Length: {{worksheetData.length}}
+      
   </div>
 </kendo-mobile-view>
