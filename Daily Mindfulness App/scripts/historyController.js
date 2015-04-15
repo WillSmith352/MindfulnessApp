@@ -13,6 +13,13 @@ myApp.controller('historyController', ['$scope', '$location', 'worksheetService'
   worksheetService.getWorksheetHistory(0, 25, function(data) {
     //console.log("got query data");
     //console.log(data);
+    
+    for (var x = 0; x < data.result.length; x++) {
+      var row = data.result[x];
+      var date = row.CreatedAt;
+      row.Created = date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear();
+    }
+    
     $scope.worksheetData = data.result;
     $scope.$apply();
   });

@@ -216,12 +216,12 @@ myApp.service('worksheetService', function() {
     
     if (this.currentUser) {
       userId = this.currentUser.Id;
-      console.log("User:");
-      console.log(this.currentUser);
+      //console.log("User:");
+      //console.log(this.currentUser);
     }
     
     if (!userId || userId == '') {
-      console.log("no user in query");
+      //console.log("no user in query");
       return [];
     }
     
@@ -248,17 +248,17 @@ myApp.service('worksheetService', function() {
   this.el = null;
 
   this.loadData = function() {
-    console.log("init");
+    //console.log("init");
   };
 
   this.getAccessToken = function() {
     var token = window.localStorage.getItem("access_token");
-    console.log("Got token: '" + token + "'");
+    //console.log("Got token: '" + token + "'");
     return token;
   };
 
   this.setAccessToken = function(value) {
-    console.log("Setting token: '" + value + "'");
+    //console.log("Setting token: '" + value + "'");
     window.localStorage.setItem("access_token", value);
   };
 
@@ -269,7 +269,7 @@ myApp.service('worksheetService', function() {
       success();
     },
     function(error){
-      console.log(error);
+      //console.log(error);
       failure(error);
     });
   };
@@ -277,7 +277,7 @@ myApp.service('worksheetService', function() {
   //this.currentUser = null;
   this.getCurrentUser = function(successFn, failureFn) {
     if (this.currentUser) {
-      console.log("returning current user");
+      //console.log("returning current user");
       if (successFn) {
         successFn(this.currentUser);
       }
@@ -285,9 +285,9 @@ myApp.service('worksheetService', function() {
     }
     var that = this;
     this.el.Users.currentUser(function (data) {
-      console.log("getCurrentUser");
+      //console.log("getCurrentUser");
       if (data && data.result) {
-        console.log("id");
+        //console.log("id");
         that.setCurrentUser(data.result);
         if (successFn)
           successFn(data.result);
@@ -300,7 +300,7 @@ myApp.service('worksheetService', function() {
   };
   
   this.setCurrentUser = function(user) {
-    console.log("bah");
+    //console.log("bah");
     this.currentUser = user;
   };
   
