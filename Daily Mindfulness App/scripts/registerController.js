@@ -8,6 +8,7 @@ myApp.controller('registerController', ['$scope', 'worksheetService', function (
   }
 
   worksheetService.isWorksheet = false;
+  worksheetService.setCurrentPath("views/register.html");
 
   $scope.handleError = function (data) {
     //console.log("Error: " + JSON.stringify(data));

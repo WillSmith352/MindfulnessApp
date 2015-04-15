@@ -5,13 +5,13 @@ myApp.controller('homeController', ['$scope', '$location', 'worksheetService', f
   $scope.pageModel.displayName = "None";
 
   worksheetService.isWorksheet = false;
+  worksheetService.setCurrentPath("#home");
   
   worksheetService.getCurrentUser(function (data) {
     if (data) {
       console.log("good");
       $scope.pageModel.authenticated = true;
       $scope.pageModel.displayName = data.DisplayName;
-      //$scope.$apply();
     }
     else {
       console.log("No user");
@@ -20,7 +20,7 @@ myApp.controller('homeController', ['$scope', '$location', 'worksheetService', f
     console.log("Error: " + error);
   });
 
-  //Is there any way to get 
+  //Is there any way to get this to work?
   //$scope.application = kendo.mobile.Appplication;
 
   $scope.goWorksheet = function () {

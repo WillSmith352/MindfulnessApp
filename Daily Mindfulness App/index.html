@@ -15,61 +15,80 @@
 </head>
 <!--<body ng-app="mindfulMobileApp" kendo-mobile-application theme="flat">-->
 <body>
-<div kendo-mobile-application k-skin="'flat'" k-id="'app'" ng-app="mindfulMobileApp" ng-controller="layoutController" k-transition="'slide'">
+<div kendo-mobile-application k-skin="'flat'" k-id="'app'" ng-app="mindfulMobileApp" ng-controller="layoutController">
   <kendo-mobile-layout k-id="'default'">
     <kendo-mobile-header>
       <kendo-mobile-nav-bar>
-        <kendo-mobile-button class="text-button" k-align="'left'" k-show="worksheetService.showBackButton()" k-on-click="goBack()">&lt; Back</kendo-mobile-button>
+        <kendo-mobile-button class="text-button navlink" k-align="'left'" ng-show="showBackButton()" ng-click="goBack()">&lt; Back</kendo-mobile-button>
         <kendo-view-title></kendo-view-title>
-        <kendo-mobile-button class="about-button" k-align="'right'" href="views/signin.html">Account</kendo-mobile-button>
+        <!--<kendo-mobile-button class="about-button" k-align="'right'" href="views/signin.html">Account</kendo-mobile-button>-->
+        <kendo-mobile-button href="#app-drawer" data-rel="drawer" data-role="button" k-align="'right'" k-position="'right'" class="text-button">Menu</kendo-mobile-button>
       </kendo-mobile-nav-bar>
     </kendo-mobile-header>
 
-    <kendo-mobile-footer>
+    <!--<kendo-mobile-footer>
       <kendo-mobile-tab-strip>
         <a href="#home" data-icon="home">Home</a>
         <a href="views/worksheet.html" data-icon="compose">Worksheet</a>
         <a href="views/history.html" data-icon="organize">History</a>
         <a href="views/signin.html" data-icon="contacts">Account</a>
       </kendo-mobile-tab-strip>
-    </kendo-mobile-footer>
+    </kendo-mobile-footer>-->
   </kendo-mobile-layout>
+  
+  <kendo-mobile-drawer id="app-drawer">
+    <!--<kendo-mobile-header>
+      <kendo-mobile-navbar>
+        <span data-role="view-title">Menu</span>
+      </kendo-mobile-navbar>
+    </kendo-mobile-header>-->
     
+    <kendo-mobile-list-view>
+      <ul id="dataList"></ul>
+        <li><a href="#home" data-icon="home">Home</a>
+        </li>
+        <li><a href="views/worksheet.html" data-icon="compose">Worksheet</a>
+        </li>
+        <li><a href="views/history.html" data-icon="organize">History</a>
+        </li>
+        <li><a href="views/signin.html" data-icon="contacts">Account</a>
+        </li>
+      </ul>
+    </kendo-mobile-list-view>
+  </kendo-mobile-drawer>  
+  
   <kendo-mobile-view k-title="'Home'" id="home" k-layout="'default'" ng-controller="homeController">
     <h1>Namast&#233;</h1>
         
     <div ng-cloak class="box">
       <div>
-        Welcome {{pageModel.authenticated ? pageModel.displayName : "Guest"}}...
+        Welcome, {{pageModel.authenticated ? pageModel.displayName : "Guest"}}!
       </div>
       <div>
         &nbsp;
       </div>
       <div>
-        Hello and welcome to the <b>Mindful Rational Living Daily Practice</b> app. To get started, click on the Worksheet button below. If you already have an account
+        Hello and welcome to the <b>Mindful Rational Living Daily Practice</b> app. To get started, click on the Worksheet button below.
+        
+        <!--If you already have an account
         <a kendo-mobile-button class="text-button" href="views/signin.html">Sign in here</a>
-        otherwise <a kendo-mobile-button class="text-button" href="views/register.html">Register now</a>.
-      </div>
-      <div>
-        Auth: {{pageModel.authenticated}}
+        otherwise <a kendo-mobile-button class="text-button" href="views/register.html">Register now</a>.-->
       </div>
       <div>
         &nbsp;
       </div>
       <div>
-        <a id="btnWorksheet" kendo-mobile-button class="nav-button" href="views/worksheet.html">
-          Worksheet
-        </a>
 
         <a id="btnSignin" kendo-mobile-button class="nav-button" href="views/signin.html" ng-if="!pageModel.authenticated">Sign In</a>
+        
+        <a id="btnWorksheet" kendo-mobile-button class="nav-button" href="views/worksheet.html">
+          Daily Worksheet
+        </a>
+
       </div>
     </div>
   </kendo-mobile-view>
-    
-  <kendo-mobile-view id="test" k-title="'Test'" k-layout="'default'" ng-controller="testController">
-    TEST
-  </kendo-mobile-view>
-    
+
   <script src="scripts/app.js"></script>
   <script src="scripts/worksheetController.js"></script>
   <script src="scripts/homeController.js"></script>

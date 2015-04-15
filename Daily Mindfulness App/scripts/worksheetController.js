@@ -13,22 +13,10 @@ myApp.controller('worksheetController', ['$scope', 'worksheetService', function 
   $scope.pageModel.user = {};
   $scope.pageModel.authenticated = false;
   $scope.pageModel.displayName = "None";
-
-  $scope.stepModel = {
-    ActivatingEvent: '',
-    BeliefSystem: '',
-    EmotionalConsequence: '',
-    BehavioralConsequence: '',
-    Dispute1: '',
-    Dispute2: '',
-    Dispute3: '',
-    Dispute4a: '',
-    Dispute4b: '',
-    Dispute4c: '',
-    EmotionalConsequence: ''
-  };
-
+  $scope.stepModel = {};
+  
   worksheetService.isWorksheet = true;
+  worksheetService.setCurrentPath("views/worksheet.html");
   
   worksheetService.getCurrentUser(function (data) {
     if (data) {
@@ -128,6 +116,9 @@ myApp.controller('worksheetController', ['$scope', 'worksheetService', function 
     worksheetService.saveWorksheetEntry($scope.stepModel);
 
     worksheetService.setCurrentStep(worksheetService.currentStep.id + 1);
+    
+    $scope.pageModel = {};
+    
   };
 
   $scope.startOver = function () {

@@ -4,6 +4,7 @@ myApp.controller('historyController', ['$scope', '$location', 'worksheetService'
   }
 
   worksheetService.isWorksheet = false;
+  worksheetService.setCurrentPath("views/history.html");
   
   $scope.pageModel.currentStep = worksheetService.currentStep;
 

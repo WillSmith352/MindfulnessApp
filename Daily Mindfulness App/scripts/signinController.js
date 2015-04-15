@@ -7,6 +7,9 @@ myApp.controller('signinController', ['$scope', '$location', 'worksheetService',
     showLoginMessage: false
   }
 
+  worksheetService.isWorksheet = false;
+  worksheetService.setCurrentPath("views/signin.html");
+  
   worksheetService.getCurrentUser(function (data) {
     //console.log("here with user: " + user.displayName);
     if (data) {

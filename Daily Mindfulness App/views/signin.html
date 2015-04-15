@@ -5,11 +5,17 @@
 
     <div ng-if="pageModel.authenticated">
         <p>
-            <strong>It looks as though you are already signed in :-)</strong>
+            <strong>Hello and welcome back!</strong>
         </p>
 
         <p>
-            <a kendo-mobile-button class="text-button" href="#home">Home</a>
+            <a id="btnWorksheet" kendo-mobile-button class="nav-button" href="views/worksheet.html">
+              Worksheet
+            </a>
+            
+            <a kendo-mobile-button class="nav-button" href="views/history.html">
+              History
+            </a>
         </p>
         
         <p>

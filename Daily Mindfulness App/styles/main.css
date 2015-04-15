@@ -109,6 +109,10 @@ select, textarea, input[type="text"], input[type="password"], input[type="email"
   text-decoration: underline !important;
 }
 
+.navlink {
+  text-decoration: none !important;
+}
+
 .text-button, .text-button-white {
     border: none !important;
     padding: 0 !important;
@@ -176,4 +180,9 @@ select, textarea, input[type="text"], input[type="password"], input[type="email"
     position: absolute;
     margin: 0 auto;
     width: 100%;
+}
+
+#app-drawer .km-content {
+  background-color: #F4F4F4 !important;
+  background-image: none !important;
 }

@@ -15,11 +15,11 @@ var myApp = angular.module('mindfulMobileApp', ['kendo.directives', 'ngSanitize'
         enabled: true,
         requireBase: false
       });
+      //$locationProvider.$locationChangeSuccess = function() {
+      //  console.log("changed");
+      //  console.log(this.args);
+      //};
     }])
-
-  .controller('testController', ['$scope', 'worksheetService', function ($scope, worksheetService) {
-    $scope.worksheetService = worksheetService;
-  }])
 
   .directive('spinIndicator', ['worksheetService', function (worksheetService) {
     return {
